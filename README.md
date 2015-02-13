@@ -1,2 +1,2 @@
-# behat-guzzle-extension
-Behat extension for Guzzle
+# Behat Guzzle Extension
+Guzzle extension for Behat

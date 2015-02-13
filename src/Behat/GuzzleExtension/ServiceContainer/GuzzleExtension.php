@@ -1,0 +1,103 @@
+<?php
+
+namespace Behat\GuzzleExtension\ServiceContainer;
+
+use Behat\Behat\Context\ServiceContainer\ContextExtension;
+use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+
+class GuzzleExtension implements ExtensionInterface
+{
+    const GUZZLE_CLIENT_ID = 'guzzle.client';
+
+    /**
+     * {@inheritDoc}
+     */
+    public function configure(ArrayNodeDefinition $builder)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getConfigKey()
+    {
+        return 'guzzle';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize(ExtensionManager $extensionManager)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ContainerBuilder $container, array $config)
+    {
+        $this->loadClients($container);
+        $this->loadContextInitializer($container)
+
+        $container->setParameter('guzzle.base_url', $config['base_url']);
+        $container->setParameter('guzzle.parameters', $config);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+    }
+
+    /**
+     * Load Client
+     *
+     * @param ContainerBuilder $container DI Container
+     *
+     * @access private
+     * @return void
+     */
+    private function loadClient(ContainerBuilder $container)
+    {
+        $container->setDefinition(
+            self::GUZZLE_CLIENT_ID,
+            new Definition(
+                'Guzzle\Service\Client',
+                array(
+                    'baseUrl' => $container->getParameter('guzzle.base_url'),
+                    'config'  => $container->getParameter('guzzle.parameters')
+                )
+            )
+        );
+    }
+
+    /**
+     * Load Context Initializer
+     *
+     * @param ContainerBuilder $container DI Container
+     *
+     * @access private
+     * @return void
+     */
+    private function loadContextInitializer(ContainerBuilder $container)
+    {
+        $definition = new Definition(
+            'Behat\GuzzleExtension\Context\Initializer\GuzzleAwareInitializer',
+            array(
+                new Reference(self::GUZZLE_CLIENT_ID),
+                '%guzzle.parameters%',
+            )
+        );
+        $definition->addTag(
+            ContextExtension::INITIALIZER_TAG,
+            array('priority' => 0)
+        );
+
+        $container->setDefinition('guzzle.context_initializer', $definition);
+    }
+}
