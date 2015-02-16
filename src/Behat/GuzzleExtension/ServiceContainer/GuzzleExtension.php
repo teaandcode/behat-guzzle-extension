@@ -1,4 +1,15 @@
 <?php
+/**
+ * Behat Guzzle Extension
+ *
+ * PHP version 5
+ *
+ * @package Behat\GuzzleExtension
+ * @author  Dave Nash <dave.nash@teaandcode.com>
+ * @license http://opensource.org/licenses/MIT The MIT License
+ * @version GIT: $Id$
+ * @link    https://github.com/teaandcode/behat-guzzle-extension GuzzleExtension
+ */
 
 namespace Behat\GuzzleExtension\ServiceContainer;
 
@@ -9,6 +20,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Guzzle extension for Behat class
+ *
+ * @package Behat\GuzzleExtension\ServiceContainer
+ * @author  Dave Nash <dave.nash@teaandcode.com>
+ * @license http://opensource.org/licenses/MIT The MIT License
+ * @version Release: @package_version@
+ * @link    https://github.com/teaandcode/behat-guzzle-extension GuzzleExtension
+ */
 class GuzzleExtension implements ExtensionInterface
 {
     const GUZZLE_CLIENT_ID = 'guzzle.client';
@@ -41,7 +61,7 @@ class GuzzleExtension implements ExtensionInterface
     public function load(ContainerBuilder $container, array $config)
     {
         $this->loadClients($container);
-        $this->loadContextInitializer($container)
+        $this->loadContextInitializer($container);
 
         $container->setParameter('guzzle.base_url', $config['base_url']);
         $container->setParameter('guzzle.parameters', $config);

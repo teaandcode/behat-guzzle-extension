@@ -1,18 +1,43 @@
 <?php
+/**
+ * Behat Guzzle Extension
+ *
+ * PHP version 5
+ *
+ * @package Behat\GuzzleExtension
+ * @author  Dave Nash <dave.nash@teaandcode.com>
+ * @license http://opensource.org/licenses/MIT The MIT License
+ * @version GIT: $Id$
+ * @link    https://github.com/teaandcode/behat-guzzle-extension GuzzleExtension
+ */
 
 namespace Behat\GuzzleExtension\Context;
 
 use Guzzle\Service\Client;
 
+/**
+ * Raw Guzzle context for Behat BDD tool
+ * Provides raw Guzzle integration (without step definitions) and web assertions
+ *
+ * @package Behat\GuzzleExtension\Context
+ * @author  Dave Nash <dave.nash@teaandcode.com>
+ * @license http://opensource.org/licenses/MIT The MIT License
+ * @version Release: @package_version@
+ * @link    https://github.com/teaandcode/behat-guzzle-extension GuzzleExtension
+ */
 class RawGuzzleContext implements GuzzleAwareContext
 {
     /**
      * @var Client
+     *
+     * @access private
      */
     private $guzzleClient;
 
     /**
      * @var array
+     *
+     * @access private
      */
     private $guzzleParameters;
 
@@ -91,6 +116,7 @@ class RawGuzzleContext implements GuzzleAwareContext
      *
      * @param string $name
      *
+     * @access public
      * @return mixed
      */
     public function getGuzzleParameter($name)
