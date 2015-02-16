@@ -97,7 +97,7 @@ class GuzzleContext extends RawGuzzleContext
      */
     public function theResponseContainsTheFollowingValue(TableNode $table)
     {
-        $item = $this->getGuzzleResponse()->json();
+        $item = $this->getGuzzleResult();
         $data = $table->getRowsHash();
 
         foreach ($item as $field => $actual) {
