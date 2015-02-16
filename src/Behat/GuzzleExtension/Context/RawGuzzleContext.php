@@ -51,6 +51,13 @@ class RawGuzzleContext implements GuzzleAwareContext
     private $guzzleResponse;
 
     /**
+     * @var array
+     *
+     * @access private
+     */
+    private $guzzleResult;
+
+    /**
      * Execute command
      *
      * @param string $command Command to execute
@@ -64,7 +71,7 @@ class RawGuzzleContext implements GuzzleAwareContext
         $command = $this->getGuzzleClient()->getCommand($command, $data);
 
         try {
-            $this->getGuzzleClient()->execute($command);
+            $this->guzzleResult = $this->getGuzzleClient()->execute($command);
         } catch (ClientErrorResponseException $e) {
             $this->guzzleResponse = $e->getResponse();
 
@@ -157,6 +164,17 @@ class RawGuzzleContext implements GuzzleAwareContext
         if (isset($this->guzzleParameters[$name])) {
             return $this->guzzleParameters[$name];
         }
+    }
+
+    /**
+     * Returns result array
+     *
+     * @access public
+     * @return array
+     */
+    public function getGuzzleResult()
+    {
+        return $this->guzzleResult;
     }
 
     /**

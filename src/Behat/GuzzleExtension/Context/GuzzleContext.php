@@ -45,7 +45,7 @@ class GuzzleContext extends RawGuzzleContext
      * @Given /^I called "(\S+)" with the following field(s?):$/
      * @When /^I call "(\S+)" with the following field(s?):$/
      */
-    public function iCallCommandWithFields($command, TableNode $table)
+    public function iCallCommandWithField($command, TableNode $table)
     {
         $data = array();
 
@@ -89,6 +89,62 @@ class GuzzleContext extends RawGuzzleContext
                 'Actual status code ' . $actual . ' does not match expected ' .
                 'status code ' . $code
             );
+        }
+    }
+
+    /**
+     * @Then the response contains the following value(s):
+     */
+    public function theResponseContainsTheFollowingValue(TableNode $table)
+    {
+        $item = $this->getGuzzleResponse()->json();
+        $data = $table->getRowsHash();
+
+        foreach ($item as $field => $actual) {
+            if (isset($data[$field])) {
+                $value = $data[$field];
+                if ($value != $actual) {
+                    throw new Exception(
+                        'Actual value ' . $actual . ' does not match ' .
+                        'expected value ' . $value
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * @Then the response contains :count resource(s) with the following data:
+     */
+    public function theResponseContainsResourceWithTheFollowingData(
+        $count,
+        TableNode $table
+    ) {
+        $list   = $this->getGuzzleResult();
+        $length = count($list);
+
+        if ($length != $count) {
+            throw new Exception(
+                'Actual count ' . $length . ' does not match expected ' .
+                'count ' . $count
+            );
+        }
+
+        $data = $table->getHash();
+
+        for ($i = 0; $i < $length; $i++) {
+            foreach ($list[$i] as $field => $actual) {
+                if (isset($data[$i][$field])) {
+                    $value = $data[$i][$field];
+                    if ($value != $actual) {
+                        throw new Exception(
+                            'Actual value ' . $actual . ' does not match ' .
+                            'expected value ' . $value . ' for field ' .
+                            $field . ' on row ' . $i
+                        );
+                    }
+                }
+            }
         }
     }
 }
