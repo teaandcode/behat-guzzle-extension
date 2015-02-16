@@ -15,6 +15,7 @@ namespace Behat\GuzzleExtension\ServiceContainer;
 
 use Behat\Behat\Context\ServiceContainer\ContextExtension;
 use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -38,6 +39,12 @@ class GuzzleExtension implements ExtensionInterface
      */
     public function configure(ArrayNodeDefinition $builder)
     {
+        $builder->addDefaultsIfNotSet()
+            ->children()
+                ->scalarNode('base_url')->defaultNull()->end()
+                ->scalarNode('service_descriptions')->defaultNull()->end()
+            ->end()
+        ->end();
     }
 
     /**
@@ -60,11 +67,11 @@ class GuzzleExtension implements ExtensionInterface
      */
     public function load(ContainerBuilder $container, array $config)
     {
-        $this->loadClients($container);
-        $this->loadContextInitializer($container);
-
         $container->setParameter('guzzle.base_url', $config['base_url']);
         $container->setParameter('guzzle.parameters', $config);
+
+        $this->loadClient($container);
+        $this->loadContextInitializer($container);
     }
 
     /**

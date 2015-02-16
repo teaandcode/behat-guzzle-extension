@@ -13,6 +13,8 @@
 
 namespace Behat\GuzzleExtension\Context;
 
+use Guzzle\Http\Exception\ClientErrorResponseException;
+use Guzzle\Http\Message\Response;
 use Guzzle\Service\Client;
 
 /**
@@ -42,6 +44,37 @@ class RawGuzzleContext implements GuzzleAwareContext
     private $guzzleParameters;
 
     /**
+     * @var Response
+     *
+     * @access private
+     */
+    private $guzzleResponse;
+
+    /**
+     * Execute command
+     *
+     * @param string $command Command to execute
+     * @param string $data    Date to send
+     *
+     * @access protected
+     * @return void
+     */
+    public function executeCommand($command, $data = array())
+    {
+        $command = $this->getGuzzleClient()->getCommand($command, $data);
+
+        try {
+            $this->getGuzzleClient()->execute($command);
+        } catch (ClientErrorResponseException $e) {
+            $this->guzzleResponse = $e->getResponse();
+
+            return;
+        }
+
+        $this->guzzleResponse = $command->getResponse();
+    }
+
+    /**
      * Sets Client instance
      *
      * @param Client $client Guzzle client
@@ -65,7 +98,7 @@ class RawGuzzleContext implements GuzzleAwareContext
         if ($this->guzzleClient === null) {
             throw new \RuntimeException(
                 'Guzzle client instance has not been set on Guzzle context ' .
-                'class. Have you enabled the Guzzle Extension?'
+                'class.' . chr(10) . 'Have you enabled the Guzzle Extension?'
             );
         }
 
@@ -124,5 +157,16 @@ class RawGuzzleContext implements GuzzleAwareContext
         if (isset($this->guzzleParameters[$name])) {
             return $this->guzzleParameters[$name];
         }
+    }
+
+    /**
+     * Returns Response instance
+     *
+     * @access public
+     * @return Response
+     */
+    public function getGuzzleResponse()
+    {
+        return $this->guzzleResponse;
     }
 }

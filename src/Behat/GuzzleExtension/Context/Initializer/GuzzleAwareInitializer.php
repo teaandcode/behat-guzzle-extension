@@ -15,7 +15,9 @@ namespace Behat\GuzzleExtension\Context\Initializer;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\ContextInitializer;
+use Behat\GuzzleExtension\Context\GuzzleAwareContext;
 use Guzzle\Service\Client;
+use Guzzle\Service\Description\ServiceDescription;
 
 /**
  * Guzzle aware contexts initializer
@@ -52,6 +54,12 @@ class GuzzleAwareInitializer implements ContextInitializer
     {
         $this->client     = $client;
         $this->parameters = $parameters;
+
+        if (!empty($parameters['service_descriptions'])) {
+            $this->client->setDescription(
+                ServiceDescription::factory($parameters['service_descriptions'])
+            );
+        }
     }
 
     /**
