@@ -221,6 +221,32 @@ class RawGuzzleContext implements GuzzleAwareContext
     }
 
     /**
+     * Compare array values
+     *
+     * @param array $input   Array with values to compare
+     * @param array $control Array with correct values
+     *
+     * @throws Exception When two field values do not match
+     *
+     * @access protected
+     * @return void
+     */
+    protected function compareArrayValues(array $input, array $control)
+    {
+        foreach ($input as $field => $actual) {
+            if (isset($control[$field])) {
+                if ($control[$field] != $actual) {
+                    throw new \Exception(
+                        'Actual value ' . $actual . ' does not match ' .
+                        'expected value ' . $control[$field] . ' for field ' .
+                        $field
+                    );
+                }
+            }
+        }
+    }
+
+    /**
      * Get request options
      *
      * @access private
@@ -270,17 +296,11 @@ class RawGuzzleContext implements GuzzleAwareContext
     {
         $options = $this->getRequestOptions();
 
-        if ($value === null) {
-            if (isset($options['headers'])) {
-                unset($options['headers']);
-            }
-        } else {
-            if (!isset($options['headers'])) {
-                $options['headers'] = array();
-            }
-
-            $options['headers'][$field] = $value;
+        if (!isset($options['headers'])) {
+            $options['headers'] = array();
         }
+
+        $options['headers'][$field] = $value;
 
         $this->setRequestOptions($options);
     }
