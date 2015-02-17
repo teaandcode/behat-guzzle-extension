@@ -1,6 +1,6 @@
 # Behat Guzzle Extension
 
-[![Build Status](https://travis-ci.org/teaandcode/behat-guzzle-extension.svg)](https://travis-ci.org/teaandcode/behat-guzzle-extension)
+[![Build Status](https://travis-ci.org/teaandcode/behat-guzzle-extension.svg?branch=master)](https://travis-ci.org/teaandcode/behat-guzzle-extension)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/?branch=master)
 
 
@@ -27,4 +27,4 @@ Copyright (c) 2015 Dave Nash (knasher). See LICENSE for details.
 
 * Dave Nash [knasher](http://github.com/knasher) [lead developer]
 * Other [awesome developers]
-  (https://github.com/Behat/GuzzleExtension/graphs/contributors)
+  (https://github.com/teaandcode/behat-guzzle-extension/graphs/contributors)

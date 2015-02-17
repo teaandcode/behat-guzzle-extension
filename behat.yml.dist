@@ -5,5 +5,5 @@ default:
       contexts: [Behat\GuzzleExtension\Context\GuzzleContext]
   extensions:
     Behat\GuzzleExtension:
-      base_url: http://en.wikipedia.org/
+      base_url: https://api.travis-ci.org
       service_descriptions: %paths.base%/config/service.json

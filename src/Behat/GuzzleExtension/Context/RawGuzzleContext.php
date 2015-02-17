@@ -66,19 +66,24 @@ class RawGuzzleContext implements GuzzleAwareContext
      * @access protected
      * @return void
      */
-    public function executeCommand($command, $data = array())
+    public function executeCommand($command, array $data = array())
     {
         $command = $this->getGuzzleClient()->getCommand($command, $data);
 
         try {
-            $this->guzzleResult = $this->getGuzzleClient()->execute($command);
+            $result = $this->getGuzzleClient()->execute($command);
         } catch (ClientErrorResponseException $e) {
             $this->guzzleResponse = $e->getResponse();
 
             return;
         }
 
+        if (!is_array($result)) {
+            $result = array($result);
+        }
+
         $this->guzzleResponse = $command->getResponse();
+        $this->guzzleResult   = $result;
     }
 
     /**
