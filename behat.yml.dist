@@ -1,0 +1,9 @@
+default:
+  suites:
+    default:
+      path: %paths.base%/features
+      contexts: [Behat\GuzzleExtension\Context\GuzzleContext]
+  extensions:
+    Behat\GuzzleExtension:
+      base_url: http://en.wikipedia.org/
+      service_descriptions: %paths.base%/config/service.json

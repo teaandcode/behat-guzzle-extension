@@ -17,8 +17,11 @@
     "require": {
         "php": ">=5.3.3",
         "behat/behat": ">=2.4",
-        "guzzle/guzzle": "~3.9",
+        "guzzle/guzzle": ">=3.5",
         "symfony/config": ">=2.2"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0"
     },
     "extra": {
         "branch-alias": {
