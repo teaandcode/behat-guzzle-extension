@@ -100,7 +100,7 @@ class GuzzleContext extends RawGuzzleContext
         $item = $this->getGuzzleResult();
         $data = $table->getRowsHash();
 
-        $this->compareArrayValues($list, $data);
+        $this->compareArrayValues($item, $data);
     }
 
     /**
