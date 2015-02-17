@@ -1,7 +1,7 @@
 {
     "name": "Travis API",
     "operations": {
-        "GetRepoBuild": {
+        "GetReposBuilds": {
             "httpMethod": "GET",
             "uri": "repos/{slug}/builds",
             "summary": "Gets the last build for repo",
@@ -10,6 +10,9 @@
                     "location": "uri",
                     "description": "Rota slug from GitHub",
                     "required": true
+                },
+                "number": {
+                    "location": "query"
                 }
             }
         }
