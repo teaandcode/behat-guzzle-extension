@@ -261,7 +261,7 @@ class RawGuzzleContext implements GuzzleAwareContext
      * Adds, updates or removes header (if no value is provided)
      *
      * @param string $field Field name
-     * @param string $value Header value
+     * @param mixed  $value Header value
      *
      * @access private
      * @return void
@@ -270,7 +270,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     {
         $options = $this->getRequestOptions();
 
-        if ($value == null) {
+        if ($value === null) {
             if (isset($options['headers'])) {
                 unset($options['headers']);
             }
