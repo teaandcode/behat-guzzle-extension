@@ -128,8 +128,7 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     public function addGuzzleHeader($field, $value)
     {
-        $config  = $this->getGuzzleClient()->getConfig();
-        $options = $config->get(Client::REQUEST_OPTIONS);
+        $options = $this->getRequestOptions();
 
         if (!isset($options['headers'])) {
             $options['headers'] = array();
@@ -137,8 +136,7 @@ class RawGuzzleContext implements GuzzleAwareContext
 
         $options['headers'][$field] = $value;
 
-        $config->set(Client::REQUEST_OPTIONS, $options);
-        $this->getGuzzleClient()->setConfig($config);
+        $this->setRequestOptions($options);
     }
 
     /**
@@ -151,15 +149,13 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     public function removeGuzzleHeader($field)
     {
-        $config  = $this->getGuzzleClient()->getConfig();
-        $options = $config->get(Client::REQUEST_OPTIONS);
+        $options = $this->getRequestOptions();
 
         if (isset($options['headers'][$field])) {
             unset($options['headers'][$field]);
         }
 
-        $config->set(Client::REQUEST_OPTIONS, $options);
-        $this->getGuzzleClient()->setConfig($config);
+        $this->setRequestOptions($options);
     }
 
     /**
@@ -236,5 +232,40 @@ class RawGuzzleContext implements GuzzleAwareContext
     public function getGuzzleResult()
     {
         return $this->result;
+    }
+
+    /**
+     * Get request options
+     *
+     * @access private
+     * @return array
+     */
+    private function getRequestOptions()
+    {
+        $options = $this->getGuzzleClient()
+            ->getConfig()
+            ->get(Client::REQUEST_OPTIONS);
+
+        if (!is_array($options)) {
+            $options = array();
+        }
+
+        return $options;
+    }
+
+    /**
+     * Set request options
+     *
+     * @param array $options Request options
+     *
+     * @access private
+     * @return void
+     */
+    private function setRequestOptions(array $options)
+    {
+        $config = $this->getGuzzleClient()->getConfig();
+        $config->set(Client::REQUEST_OPTIONS, $options);
+
+        $this->getGuzzleClient()->setConfig($config);
     }
 }
