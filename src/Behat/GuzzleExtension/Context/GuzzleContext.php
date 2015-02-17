@@ -100,17 +100,7 @@ class GuzzleContext extends RawGuzzleContext
         $item = $this->getGuzzleResult();
         $data = $table->getRowsHash();
 
-        foreach ($item as $field => $actual) {
-            if (isset($data[$field])) {
-                $value = $data[$field];
-                if ($value != $actual) {
-                    throw new Exception(
-                        'Actual value ' . $actual . ' does not match ' .
-                        'expected value ' . $value
-                    );
-                }
-            }
-        }
+        $this->compareArrayValues($list, $data);
     }
 
     /**
