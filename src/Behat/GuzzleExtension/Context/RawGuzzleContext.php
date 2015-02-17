@@ -128,15 +128,7 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     public function addGuzzleHeader($field, $value)
     {
-        $options = $this->getRequestOptions();
-
-        if (!isset($options['headers'])) {
-            $options['headers'] = array();
-        }
-
-        $options['headers'][$field] = $value;
-
-        $this->setRequestOptions($options);
+        $this->updateHeader($field, $value);
     }
 
     /**
@@ -149,13 +141,7 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     public function removeGuzzleHeader($field)
     {
-        $options = $this->getRequestOptions();
-
-        if (isset($options['headers'][$field])) {
-            unset($options['headers'][$field]);
-        }
-
-        $this->setRequestOptions($options);
+        $this->updateHeader($field);
     }
 
     /**
@@ -267,5 +253,35 @@ class RawGuzzleContext implements GuzzleAwareContext
         $config->set(Client::REQUEST_OPTIONS, $options);
 
         $this->getGuzzleClient()->setConfig($config);
+    }
+
+    /**
+     * Update header
+     *
+     * Adds, updates or removes header (if no value is provided)
+     *
+     * @param string $field Field name
+     * @param string $value Header value
+     *
+     * @access private
+     * @return void
+     */
+    private function updateHeader($field, $value = null)
+    {
+        $options = $this->getRequestOptions();
+
+        if ($value == null) {
+            if (isset($options['headers']) {
+                unset($options['headers']);
+            }
+        } else {
+            if (!isset($options['headers'])) {
+                $options['headers'] = array();
+            }
+
+            $options['headers'][$field] = $value;
+        }
+
+        $this->setRequestOptions($options);
     }
 }
