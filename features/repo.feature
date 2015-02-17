@@ -3,7 +3,7 @@ Feature: Repo
   I would like to see build details for a repo
 
   Scenario: Getting the first build
-    When I call "GetReposBuilds" with the following field:
+    When I call "GetReposBuilds" with the following fields:
       | slug   | teaandcode/behat-guzzle-extension |
       | number | 1                                 |
     Then I get a successful response

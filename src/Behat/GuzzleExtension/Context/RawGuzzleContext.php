@@ -34,28 +34,52 @@ class RawGuzzleContext implements GuzzleAwareContext
      *
      * @access private
      */
-    private $guzzleClient;
+    private $client;
 
     /**
      * @var array
      *
      * @access private
      */
-    private $guzzleParameters;
+    private $parameters;
 
     /**
      * @var Response
      *
      * @access private
      */
-    private $guzzleResponse;
+    private $response;
 
     /**
      * @var array
      *
      * @access private
      */
-    private $guzzleResult;
+    private $result;
+
+    /**
+     * Add Guzzle header
+     *
+     * @param string $field Field name
+     * @param string $value Header value
+     *
+     * @access public
+     * @return void
+     */
+    public function addGuzzleHeader($field, $value)
+    {
+        $config  = $this->getGuzzleClient()->getConfig();
+        $options = $config->get(Client::REQUEST_OPTIONS);
+
+        if (!isset($options['headers'])) {
+            $options['headers'] = array();
+        }
+
+        $options['headers'][$field] = $value;
+
+        $config->set(Client::REQUEST_OPTIONS, $options);
+        $this->getGuzzleClient()->setConfig($config);
+    }
 
     /**
      * Execute command
@@ -73,7 +97,7 @@ class RawGuzzleContext implements GuzzleAwareContext
         try {
             $result = $this->getGuzzleClient()->execute($command);
         } catch (ClientErrorResponseException $e) {
-            $this->guzzleResponse = $e->getResponse();
+            $this->response = $e->getResponse();
 
             return;
         }
@@ -82,8 +106,26 @@ class RawGuzzleContext implements GuzzleAwareContext
             $result = array($result);
         }
 
-        $this->guzzleResponse = $command->getResponse();
-        $this->guzzleResult   = $result;
+        $this->response = $command->getResponse();
+        $this->result   = $result;
+    }
+
+    /**
+     * Returns Client instance
+     *
+     * @access public
+     * @return Client
+     */
+    public function getGuzzleClient()
+    {
+        if ($this->client === null) {
+            throw new \RuntimeException(
+                'Guzzle client instance has not been set on Guzzle context ' .
+                'class.' . chr(10) . 'Have you enabled the Guzzle Extension?'
+            );
+        }
+
+        return $this->client;
     }
 
     /**
@@ -96,49 +138,22 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     public function setGuzzleClient(Client $client)
     {
-        $this->guzzleClient = $client;
+        $this->client = $client;
     }
 
     /**
-     * Returns Client instance
+     * Returns specific Guzzle parameter
+     *
+     * @param string $name
      *
      * @access public
-     * @return Client
+     * @return mixed
      */
-    public function getGuzzleClient()
+    public function getGuzzleParameter($name)
     {
-        if ($this->guzzleClient === null) {
-            throw new \RuntimeException(
-                'Guzzle client instance has not been set on Guzzle context ' .
-                'class.' . chr(10) . 'Have you enabled the Guzzle Extension?'
-            );
+        if (isset($this->parameters[$name])) {
+            return $this->parameters[$name];
         }
-
-        return $this->guzzleClient;
-    }
-
-    /**
-     * Sets parameters provided for Guzzle
-     *
-     * @param array $parameters
-     *
-     * @access public
-     * @return void
-     */
-    public function setGuzzleParameters(array $parameters)
-    {
-        $this->guzzleParameters = $parameters;
-    }
-
-    /**
-     * Returns the parameters provided for Guzzle
-     *
-     * @access public
-     * @return array
-     */
-    public function getGuzzleParameters()
-    {
-        return $this->guzzleParameters;
     }
 
     /**
@@ -153,33 +168,31 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     public function setGuzzleParameter($name, $value)
     {
-        $this->guzzleParameters[$name] = $value;
+        $this->parameters[$name] = $value;
     }
 
     /**
-     * Returns specific Guzzle parameter
-     *
-     * @param string $name
-     *
-     * @access public
-     * @return mixed
-     */
-    public function getGuzzleParameter($name)
-    {
-        if (isset($this->guzzleParameters[$name])) {
-            return $this->guzzleParameters[$name];
-        }
-    }
-
-    /**
-     * Returns result array
+     * Returns the parameters provided for Guzzle
      *
      * @access public
      * @return array
      */
-    public function getGuzzleResult()
+    public function getGuzzleParameters()
     {
-        return $this->guzzleResult;
+        return $this->parameters;
+    }
+
+    /**
+     * Sets parameters provided for Guzzle
+     *
+     * @param array $parameters
+     *
+     * @access public
+     * @return void
+     */
+    public function setGuzzleParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
     }
 
     /**
@@ -190,6 +203,17 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     public function getGuzzleResponse()
     {
-        return $this->guzzleResponse;
+        return $this->response;
+    }
+
+    /**
+     * Returns result array
+     *
+     * @access public
+     * @return array
+     */
+    public function getGuzzleResult()
+    {
+        return $this->result;
     }
 }
