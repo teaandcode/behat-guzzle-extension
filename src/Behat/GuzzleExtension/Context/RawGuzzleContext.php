@@ -271,7 +271,7 @@ class RawGuzzleContext implements GuzzleAwareContext
         $options = $this->getRequestOptions();
 
         if ($value == null) {
-            if (isset($options['headers']) {
+            if (isset($options['headers'])) {
                 unset($options['headers']);
             }
         } else {
