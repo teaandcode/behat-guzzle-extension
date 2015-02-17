@@ -61,7 +61,7 @@ class RawGuzzleContext implements GuzzleAwareContext
      * Execute command
      *
      * @param string $command Command to execute
-     * @param string $data    Date to send
+     * @param array  $data    Data to send
      *
      * @access protected
      * @return void
