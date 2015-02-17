@@ -4,7 +4,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/?branch=master)
 
 
-Guzzle extension for Behat is an integration layer between Behat 2.4+ and Guzzle
+Guzzle extension for Behat is an integration layer between Behat 3.0+ and Guzzle
 3.5+ and it provides:
 
 * Additional services for Behat (``Guzzle``).

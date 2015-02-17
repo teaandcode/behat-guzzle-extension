@@ -16,7 +16,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "behat/behat": ">=2.4",
+        "behat/behat": "~3.0,>=3.0.5",
         "guzzle/guzzle": ">=3.5",
         "symfony/config": ">=2.2"
     },

@@ -58,30 +58,6 @@ class RawGuzzleContext implements GuzzleAwareContext
     private $result;
 
     /**
-     * Add Guzzle header
-     *
-     * @param string $field Field name
-     * @param string $value Header value
-     *
-     * @access public
-     * @return void
-     */
-    public function addGuzzleHeader($field, $value)
-    {
-        $config  = $this->getGuzzleClient()->getConfig();
-        $options = $config->get(Client::REQUEST_OPTIONS);
-
-        if (!isset($options['headers'])) {
-            $options['headers'] = array();
-        }
-
-        $options['headers'][$field] = $value;
-
-        $config->set(Client::REQUEST_OPTIONS, $options);
-        $this->getGuzzleClient()->setConfig($config);
-    }
-
-    /**
      * Execute command
      *
      * @param string $command Command to execute
@@ -139,6 +115,51 @@ class RawGuzzleContext implements GuzzleAwareContext
     public function setGuzzleClient(Client $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * Add Guzzle header
+     *
+     * @param string $field Field name
+     * @param string $value Header value
+     *
+     * @access public
+     * @return void
+     */
+    public function addGuzzleHeader($field, $value)
+    {
+        $config  = $this->getGuzzleClient()->getConfig();
+        $options = $config->get(Client::REQUEST_OPTIONS);
+
+        if (!isset($options['headers'])) {
+            $options['headers'] = array();
+        }
+
+        $options['headers'][$field] = $value;
+
+        $config->set(Client::REQUEST_OPTIONS, $options);
+        $this->getGuzzleClient()->setConfig($config);
+    }
+
+    /**
+     * Remove Guzzle header
+     *
+     * @param string $field Field name
+     *
+     * @access public
+     * @return void
+     */
+    public function removeGuzzleHeader($field)
+    {
+        $config  = $this->getGuzzleClient()->getConfig();
+        $options = $config->get(Client::REQUEST_OPTIONS);
+
+        if (isset($options['headers'][$field])) {
+            unset($options['headers'][$field]);
+        }
+
+        $config->set(Client::REQUEST_OPTIONS, $options);
+        $this->getGuzzleClient()->setConfig($config);
     }
 
     /**
