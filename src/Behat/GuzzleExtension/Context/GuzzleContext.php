@@ -29,6 +29,38 @@ use Guzzle\Http\Exception\ClientErrorResponseException;
 class GuzzleContext extends RawGuzzleContext
 {
     /**
+     * @var array
+     *
+     * @access protected
+     */
+    protected $users;
+
+    public function __construct(array $users = array())
+    {
+        $this->users = $users;
+    }
+
+    /**
+     * Calls specified command
+     *
+     * @Given /^I authenticated as "(\S+)"$/
+     * @When /^I authenticate as "(\S+)"$/
+     */
+    public function iAuthenticateAs($user)
+    {
+        if (!isset($this->users[$user])) {
+            throw new ClientErrorResponseException(
+                'User ' . $user . ' does not exist'
+            );
+        }
+
+        $this->addGuzzleHeader(
+            'Authorization',
+            'Bearer ' . $this->users[$user]
+        );
+    }
+
+    /**
      * Calls specified command
      *
      * @Given /^I called "(\S+)"$/
