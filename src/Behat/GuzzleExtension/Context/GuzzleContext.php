@@ -93,6 +93,21 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
+     * @Then I get a response with a status code of :code
+     */
+    public function iGetAResponseWithAStatusCodeOf($code)
+    {
+        $actual = $this->getGuzzleResponse()->getStatusCode();
+
+        if ($actual != $code) {
+            throw new ClientErrorResponseException(
+                'Actual status code ' . $actual . ' does not match expected ' .
+                'status code ' . $code
+            );
+        }
+    }
+
+    /**
      * @Then I get a successful response
      */
     public function iGetASuccessfulResponse()
@@ -114,14 +129,7 @@ class GuzzleContext extends RawGuzzleContext
             throw new ClientErrorResponseException('Response successful');
         }
 
-        $actual = $this->getGuzzleResponse()->getStatusCode();
-
-        if ($actual != $code) {
-            throw new ClientErrorResponseException(
-                'Actual status code ' . $actual . ' does not match expected ' .
-                'status code ' . $code
-            );
-        }
+        $this->iGetAResponseWithAStatusCodeOf($code);
     }
 
     /**

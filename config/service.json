@@ -8,7 +8,7 @@
             "parameters": {
                 "slug": {
                     "location": "uri",
-                    "description": "Rota slug from GitHub",
+                    "description": "Repo slug from GitHub",
                     "required": true
                 },
                 "number": {
