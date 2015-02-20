@@ -13,7 +13,7 @@
 
 namespace Behat\GuzzleExtension\Context;
 
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Message\Response;
 use Guzzle\Service\Client;
 
@@ -72,7 +72,7 @@ class RawGuzzleContext implements GuzzleAwareContext
 
         try {
             $result = $this->getGuzzleClient()->execute($command);
-        } catch (ClientErrorResponseException $e) {
+        } catch (BadResponseException $e) {
             $this->response = $e->getResponse();
 
             return;
