@@ -13,6 +13,7 @@
 
 namespace Behat\GuzzleExtension\Context;
 
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 
@@ -74,8 +75,8 @@ class GuzzleContext extends RawGuzzleContext
     /**
      * Calls specified command with fields
      *
-     * @Given /^I called "(\S+)" with the following field(s?):$/
-     * @When /^I call "(\S+)" with the following field(s?):$/
+     * @Given /^I called "(\S+)" with the following values(s):$/
+     * @When /^I call "(\S+)" with the following values(s):$/
      */
     public function iCallCommandWithField($command, TableNode $table)
     {
@@ -90,6 +91,19 @@ class GuzzleContext extends RawGuzzleContext
         }
 
         $this->executeCommand($command, $data);
+    }
+
+    /**
+     * Calls specified command with fields
+     *
+     * @Given /^I called "(\S+)" with the following values(s) from JSON:$/
+     * @When /^I call "(\S+)" with the following values(s) from JSON:$/
+     */
+    public function iCallCommandWithFieldFromJSON(
+                     $command,
+        PyStringNode $string
+    ) {
+        $this->executeCommand($command, json_decode($string, true));
     }
 
     /**
