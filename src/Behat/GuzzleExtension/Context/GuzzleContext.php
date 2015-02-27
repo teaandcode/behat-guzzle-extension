@@ -75,8 +75,8 @@ class GuzzleContext extends RawGuzzleContext
     /**
      * Calls specified command with fields
      *
-     * @Given /^I called "(\S+)" with the following values(s?):$/
-     * @When /^I call "(\S+)" with the following values(s?):$/
+     * @Given /^I called "(\S+)" with the following value(s?):$/
+     * @When /^I call "(\S+)" with the following value(s?):$/
      */
     public function iCallCommandWithField($command, TableNode $table)
     {
@@ -96,8 +96,8 @@ class GuzzleContext extends RawGuzzleContext
     /**
      * Calls specified command with fields
      *
-     * @Given /^I called "(\S+)" with the following values(s?) from JSON:$/
-     * @When /^I call "(\S+)" with the following values(s?) from JSON:$/
+     * @Given /^I called "(\S+)" with the following value(s?) from JSON:$/
+     * @When /^I call "(\S+)" with the following value(s?) from JSON:$/
      */
     public function iCallCommandWithFieldFromJSON(
                      $command,
