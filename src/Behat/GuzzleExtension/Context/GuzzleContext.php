@@ -103,7 +103,7 @@ class GuzzleContext extends RawGuzzleContext
                      $command,
         PyStringNode $string
     ) {
-        $this->executeCommand($command, json_decode($string, true));
+        $this->executeCommand($command, json_decode($string->getRaw(), true));
     }
 
     /**
