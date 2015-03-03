@@ -34,6 +34,13 @@ class GuzzleContext extends RawGuzzleContext
      *
      * @access protected
      */
+    protected $storedResult;
+
+    /**
+     * @var array
+     *
+     * @access protected
+     */
     protected $users;
 
     public function __construct(array $users = array())
@@ -73,16 +80,34 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
+     * Calls specified command with text
+     *
+     * @Given /^I called "(\S+)" with the following body text:$/
+     * @When /^I call "(\S+)" with the following body text:$/
+     */
+    public function iCallCommandWithBodyText($command, PyStringNode $string)
+    {
+        $this->executeCommand(
+            $command,
+            array(
+                'body' => $this->addStoredValues($string->getRaw())
+            )
+        );
+    }
+
+    /**
      * Calls specified command with fields
      *
      * @Given /^I called "(\S+)" with the following value(s?):$/
      * @When /^I call "(\S+)" with the following value(s?):$/
      */
-    public function iCallCommandWithField($command, TableNode $table)
+    public function iCallCommandWithValue($command, TableNode $table)
     {
         $data = array();
 
         foreach ($table->getRowsHash() as $field => $value) {
+            $value = $this->addStoredValues($value);
+
             if (is_numeric($value)) {
                 $value = intval($value);
             }
@@ -99,11 +124,14 @@ class GuzzleContext extends RawGuzzleContext
      * @Given /^I called "(\S+)" with the following value(s?) from JSON:$/
      * @When /^I call "(\S+)" with the following value(s?) from JSON:$/
      */
-    public function iCallCommandWithFieldFromJSON(
+    public function iCallCommandWithValueFromJSON(
                      $command,
         PyStringNode $string
     ) {
-        $this->executeCommand($command, json_decode($string->getRaw(), true));
+        $this->executeCommand(
+            $command,
+            json_decode($this->addStoredValues($string->getRaw()), true)
+        );
     }
 
     /**
@@ -179,5 +207,40 @@ class GuzzleContext extends RawGuzzleContext
         for ($i = 0; $i < $length; $i++) {
             $this->compareArrayValues($list[$i], $data[$i]);
         }
+    }
+
+    /**
+     * @Then /^the response is stored as "(\S+)"$/
+     */
+    public function theResponseIsStored($name)
+    {
+        $this->storedResult[$name] = $this->getGuzzleResult();
+    }
+
+    /**
+     * Adds stored values to string
+     *
+     * @param string $string String containing stored field markers
+     *
+     * @access protected
+     * @return string
+     */
+    protected function addStoredValues($string)
+    {
+        preg_match_all('/\{stored\[(.*?)\]\}/si', $string, $matches);
+
+        for ($i = 0; $i < count($matches[0]); $i++) {
+            $parts = explode('][', $matches[1][$i]);
+            $value = $this->storedResult;
+            foreach ($parts as $part) {
+                if (isset($value[$part])) {
+                    $value = $value[$part];
+                }
+            }
+
+            $string = str_replace($matches[0][$i], $value, $string);
+        }
+
+        return $string;
     }
 }
