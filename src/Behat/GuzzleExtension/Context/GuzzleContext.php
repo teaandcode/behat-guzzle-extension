@@ -229,7 +229,9 @@ class GuzzleContext extends RawGuzzleContext
     {
         preg_match_all('/\{stored\[(.*?)\]\}/si', $string, $matches);
 
-        for ($i = 0; $i < count($matches[0]); $i++) {
+        $length = count($matches[0]);
+
+        for ($i = 0; $i < $length; $i++) {
             $parts = explode('][', $matches[1][$i]);
             $value = $this->storedResult;
             foreach ($parts as $part) {
