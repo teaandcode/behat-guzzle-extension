@@ -30,6 +30,16 @@ use Guzzle\Service\Client;
 class RawGuzzleContext implements GuzzleAwareContext
 {
     /**
+     * @var string
+     */
+    const GUZZLE_EXTENSION_NAME = 'Behat Guzzle Extension';
+
+    /**
+     * @var string
+     */
+    const GUZZLE_EXTENSION_VERSION = '0.1';
+
+    /**
      * @var Client
      *
      * @access private
@@ -68,6 +78,11 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     public function executeCommand($command, array $data = array())
     {
+        $this->updateHeader(
+            'User-Agent',
+            self::GUZZLE_EXTENSION_NAME .'/'. GUZZLE_EXTENSION_VERSION
+        );
+
         $command = $this->getGuzzleClient()->getCommand($command, $data);
 
         try {
