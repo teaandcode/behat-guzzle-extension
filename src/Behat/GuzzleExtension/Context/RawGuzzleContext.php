@@ -80,7 +80,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     {
         $this->updateHeader(
             'User-Agent',
-            self::GUZZLE_EXTENSION_NAME . '/' . GUZZLE_EXTENSION_VERSION
+            self::GUZZLE_EXTENSION_NAME . '/' . self::GUZZLE_EXTENSION_VERSION
         );
 
         $command = $this->getGuzzleClient()->getCommand($command, $data);
