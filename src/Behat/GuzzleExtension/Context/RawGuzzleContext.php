@@ -37,7 +37,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     /**
      * @var string
      */
-    const GUZZLE_EXTENSION_VERSION = '0.1';
+    const GUZZLE_EXTENSION_VERSION = '0.1.1';
 
     /**
      * @var Client
@@ -78,8 +78,7 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     public function executeCommand($command, array $data = array())
     {
-        $this->updateHeader(
-            'User-Agent',
+        $this->getGuzzleClient()->setUserAgent(
             self::GUZZLE_EXTENSION_NAME . '/' . self::GUZZLE_EXTENSION_VERSION
         );
 
