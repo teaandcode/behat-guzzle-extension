@@ -107,21 +107,7 @@ class GuzzleContext extends RawGuzzleContext
 
         foreach ($table->getRowsHash() as $field => $value) {
             $value = $this->addStoredValues($value);
-
-            switch ($value) {
-                case 'false':
-                    $value = false;
-                    break;
-
-                case 'true':
-                    $value = true;
-                    break;
-
-                default:
-                    if (is_numeric($value)) {
-                        $value = intval($value);
-                    }
-            }
+            $value = $this->castValue($value);
 
             $data[$field] = $value;
         }
@@ -226,6 +212,31 @@ class GuzzleContext extends RawGuzzleContext
     public function theResponseIsStored($name)
     {
         $this->storedResult[$name] = $this->getGuzzleResult();
+    }
+
+    /**
+     * Cast value into type depending on content
+     *
+     * @param string $value String value
+     *
+     * @access protected
+     * @return mixed
+     */
+    protected function castValue($value)
+    {
+        switch ($value) {
+            case 'false':
+                return false;
+
+            case 'true':
+                return true;
+        }
+
+        if (is_numeric($value)) {
+            $value = intval($value);
+        }
+
+        return $value;
     }
 
     /**
