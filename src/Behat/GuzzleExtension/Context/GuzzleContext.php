@@ -108,8 +108,19 @@ class GuzzleContext extends RawGuzzleContext
         foreach ($table->getRowsHash() as $field => $value) {
             $value = $this->addStoredValues($value);
 
-            if (is_numeric($value)) {
-                $value = intval($value);
+            switch ($value) {
+                case 'false':
+                    $value = false;
+                    break;
+
+                case 'true':
+                    $value = true;
+                    break;
+
+                default:
+                    if (is_numeric($value)) {
+                        $value = intval($value);
+                    }
             }
 
             $data[$field] = $value;
