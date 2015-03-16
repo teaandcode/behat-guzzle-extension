@@ -240,8 +240,6 @@ class RawGuzzleContext implements GuzzleAwareContext
      * @param array $input   Array with values to compare
      * @param array $control Array with correct values
      *
-     * @throws Exception When two field values do not match
-     *
      * @access protected
      * @return void
      */
@@ -251,14 +249,31 @@ class RawGuzzleContext implements GuzzleAwareContext
             if (isset($control[$field])) {
                 if (is_array($actual) && is_array($control[$field])) {
                     $this->compareArrayValues($actual, $control[$field]);
-                } elseif ($actual != $control[$field]) {
-                    throw new \Exception(
-                        'Actual value ' . $actual . ' does not match ' .
-                        'expected value ' . $control[$field] . ' for field ' .
-                        $field
-                    );
+                } else {
+                    $this->compareValues($actual, $control[$field]);
                 }
             }
+        }
+    }
+
+    /**
+     * Compare array values
+     *
+     * @param mixed $input   Input value
+     * @param mixed $control Correct control value
+     *
+     * @throws Exception When two field values do not match
+     *
+     * @access protected
+     * @return void
+     */
+    protected function compareValues($input, $control)
+    {
+        if ($input != $control) {
+            throw new \Exception(
+                'Actual value ' . $input . ' does not match expected value ' .
+                $control
+            );
         }
     }
 
