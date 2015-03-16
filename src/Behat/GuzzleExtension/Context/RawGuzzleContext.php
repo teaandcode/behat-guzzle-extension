@@ -249,7 +249,9 @@ class RawGuzzleContext implements GuzzleAwareContext
     {
         foreach ($input as $field => $actual) {
             if (isset($control[$field])) {
-                if ($control[$field] != $actual) {
+                if (is_array($actual) && is_array($control[$field])) {
+                    $this->compareArrayValues($actual, $control[$field]);
+                } elseif ($actual != $control[$field]) {
                     throw new \Exception(
                         'Actual value ' . $actual . ' does not match ' .
                         'expected value ' . $control[$field] . ' for field ' .

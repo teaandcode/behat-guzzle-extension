@@ -176,8 +176,17 @@ class GuzzleContext extends RawGuzzleContext
      */
     public function theResponseContainsTheFollowingValue(TableNode $table)
     {
+        $data = array();
         $item = $this->getGuzzleResult();
-        $data = $table->getRowsHash();
+
+        foreach ($table->getRowsHash() as $field => $value) {
+            $ref = &$data;
+            foreach (explode('[', $field) as $part) {
+                $part = trim($part, ']');
+                $ref = &$ref[$part];
+            }
+            $ref = $this->addStoredValues($value);
+        }
 
         $this->compareArrayValues($item, $data);
     }
