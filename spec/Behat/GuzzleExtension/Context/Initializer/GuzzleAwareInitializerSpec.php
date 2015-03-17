@@ -11,7 +11,13 @@ class GuzzleAwareInitializerSpec extends ObjectBehavior
 {
     function let(Client $client)
     {
-        $this->beConstructedWith($client, array('base_url' => 'foo'));
+        $this->beConstructedWith(
+            $client,
+            array(
+                'base_url'             => 'https://api.travis-ci.org',
+                'service_descriptions' => 'config/service.json'
+            )
+        );
     }
 
     function it_is_a_context_initializer()
