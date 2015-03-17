@@ -21,7 +21,8 @@
         "symfony/config": ">=2.2"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.0"
+        "phpspec/phpspec": "~2.0",
+        "henrikbjorn/phpspec-code-coverage": "~0.2"
     },
     "extra": {
         "branch-alias": {

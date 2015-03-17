@@ -15,12 +15,12 @@ matrix:
 
 before_script:
   - curl -s http://getcomposer.org/installer | php
-  - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
-  - composer install --prefer-source
+  - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then php composer.phar require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
+  - php composer.phar install --prefer-source
   - export PATH=./vendor/bin:$PATH
 
 script:
-  - phpspec run -f pretty
+  - vendor/bin/phpspec run --config phpspec.yml --format pretty
   - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover test/build/coverage.xml
+  - php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml
   - behat -fprogress --strict
