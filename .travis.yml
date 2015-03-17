@@ -14,10 +14,13 @@ matrix:
       env: SYMFONY_VERSION='2.5.*@dev'
 
 before_script:
+  - curl -s http://getcomposer.org/installer | php
   - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
   - composer install --prefer-source
   - export PATH=./vendor/bin:$PATH
 
 script:
   - phpspec run -f pretty
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover test/build/coverage.xml
   - behat -fprogress --strict

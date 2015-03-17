@@ -37,7 +37,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     /**
      * @var string
      */
-    const GUZZLE_EXTENSION_VERSION = '0.2.0';
+    const GUZZLE_EXTENSION_VERSION = '0.3.0';
 
     /**
      * @var Client
@@ -243,7 +243,7 @@ class RawGuzzleContext implements GuzzleAwareContext
      * @access protected
      * @return void
      */
-    protected function compareArrayValues(array $input, array $control)
+    protected function compareArrays(array $input, array $control)
     {
         foreach ($input as $field => $actual) {
             if (isset($control[$field])) {
@@ -266,12 +266,14 @@ class RawGuzzleContext implements GuzzleAwareContext
     protected function compareValues($input, $control)
     {
         if (is_array($input) && is_array($control)) {
-            $this->compareArrayValues($input, $control);
-        } elseif ($input != $control) {
-            throw new \Exception(
-                'Actual value ' . $input . ' does not match expected value ' .
-                $control
-            );
+            $this->compareArrays($input, $control);
+        } else {
+            if ($input != $control) {
+                throw new \Exception(
+                    'Actual value ' . $input . ' does not match expected ' .
+                    'value ' . $control
+                );
+            }
         }
     }
 

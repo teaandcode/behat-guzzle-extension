@@ -188,7 +188,7 @@ class GuzzleContext extends RawGuzzleContext
             $ref = $this->addStoredValues($value);
         }
 
-        $this->compareArrayValues($item, $data);
+        $this->compareValues($item, $data);
     }
 
     /**
@@ -211,7 +211,7 @@ class GuzzleContext extends RawGuzzleContext
         $data = $table->getHash();
 
         for ($i = 0; $i < $length; $i++) {
-            $this->compareArrayValues($list[$i], $data[$i]);
+            $this->compareValues($list[$i], $data[$i]);
         }
     }
 
