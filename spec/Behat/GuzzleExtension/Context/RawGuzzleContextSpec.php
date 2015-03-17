@@ -3,6 +3,7 @@
 namespace spec\Behat\GuzzleExtension\Context;
 
 use Guzzle\Service\Client;
+use Guzzle\Service\Description\ServiceDescription;
 use PhpSpec\ObjectBehavior;
 
 class RawGuzzleContextSpec extends ObjectBehavior
@@ -10,6 +11,22 @@ class RawGuzzleContextSpec extends ObjectBehavior
     public function it_is_a_raw_guzzle_context()
     {
         $this->shouldHaveType('Behat\GuzzleExtension\Context\RawGuzzleContext');
+    }
+
+    public function it_executes_a_command()
+    {
+        $client = new Client('https://api.travis-ci.org');
+        $client->setDescription(
+            ServiceDescription::factory(
+                __DIR__ . '/../../../../config/service.json'
+            )
+        );
+
+        $this->setGuzzleClient($client);
+        $this->executeCommand(
+            'GetReposBuilds',
+            array('slug' => 'teaandcode/behat-guzzle-extension')
+        );
     }
 
     public function it_does_not_get_a_guzzle_client()
@@ -62,5 +79,15 @@ class RawGuzzleContextSpec extends ObjectBehavior
 
         $this->setGuzzleParameters($parameters);
         $this->getGuzzleParameters()->shouldReturn($parameters);
-    } 
+    }
+
+    public function it_gets_guzzle_response()
+    {
+        $this->getGuzzleResponse()->shouldReturn(null);
+    }
+
+    public function it_gets_guzzle_result()
+    {
+        $this->getGuzzleResult()->shouldReturn(null);
+    }
 }
