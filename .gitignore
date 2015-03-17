@@ -1,4 +1,5 @@
 *.tgz
 *.phar
+build
 composer.lock
 vendor

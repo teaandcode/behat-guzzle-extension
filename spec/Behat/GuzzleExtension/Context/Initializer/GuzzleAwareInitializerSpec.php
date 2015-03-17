@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 
 class GuzzleAwareInitializerSpec extends ObjectBehavior
 {
-    function let(Client $client)
+    public function let(Client $client)
     {
         $this->beConstructedWith(
             $client,
@@ -20,19 +20,19 @@ class GuzzleAwareInitializerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_context_initializer()
+    public function it_is_a_context_initializer()
     {
         $this->shouldHaveType(
             'Behat\Behat\Context\Initializer\ContextInitializer'
         );
     }
 
-    function it_does_nothing_for_basic_contexts(Context $context)
+    public function it_does_nothing_for_basic_contexts(Context $context)
     {
         $this->initializeContext($context);
     }
 
-    function it_injects_client_and_parameters_in_guzzle_aware_contexts(
+    public function it_injects_client_and_parameters_in_guzzle_aware_contexts(
         GuzzleAwareContext $context,
         Client $client
     )
