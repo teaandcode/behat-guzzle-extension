@@ -38,8 +38,10 @@ class GuzzleAwareInitializerSpec extends ObjectBehavior
     )
     {
         $context->setGuzzleClient($client)->shouldBeCalled();
-        $context->setGuzzleParameters(array('base_url' => 'foo'))
-            ->shouldBeCalled();
+        $context->setGuzzleParameters(array(
+            'base_url'             => 'https://api.travis-ci.org',
+            'service_descriptions' => 'config/service.json'
+        ))->shouldBeCalled();
 
         $this->initializeContext($context);
     }
