@@ -14,6 +14,7 @@
 namespace Behat\GuzzleExtension\Context;
 
 use Guzzle\Http\Exception\BadResponseException;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Response;
 use Guzzle\Service\Client;
 
@@ -90,10 +91,6 @@ class RawGuzzleContext implements GuzzleAwareContext
             $this->response = $e->getResponse();
 
             return;
-        }
-
-        if (!is_array($result)) {
-            $result = array($result);
         }
 
         $this->response = $command->getResponse();
@@ -269,7 +266,7 @@ class RawGuzzleContext implements GuzzleAwareContext
             $this->compareArrays($input, $control);
         } else {
             if ($input != $control) {
-                throw new \Exception(
+                throw new ClientErrorResponseException(
                     'Actual value ' . $input . ' does not match expected ' .
                     'value ' . $control
                 );

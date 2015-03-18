@@ -202,7 +202,7 @@ class GuzzleContext extends RawGuzzleContext
         $length = count($list);
 
         if ($length != $count) {
-            throw new Exception(
+            throw new ClientErrorResponseException(
                 'Actual count ' . $length . ' does not match expected ' .
                 'count ' . $count
             );
