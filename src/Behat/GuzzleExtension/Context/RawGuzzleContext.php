@@ -38,7 +38,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     /**
      * @var string
      */
-    const GUZZLE_EXTENSION_VERSION = '0.3.0';
+    const GUZZLE_EXTENSION_VERSION = '0.3.1';
 
     /**
      * @var Client
@@ -62,7 +62,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     private $response;
 
     /**
-     * @var array
+     * @var mixed
      *
      * @access private
      */
@@ -221,10 +221,10 @@ class RawGuzzleContext implements GuzzleAwareContext
     }
 
     /**
-     * Returns result array
+     * Returns result
      *
      * @access public
-     * @return array
+     * @return mixed
      */
     public function getGuzzleResult()
     {
