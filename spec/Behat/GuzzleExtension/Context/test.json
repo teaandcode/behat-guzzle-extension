@@ -1,0 +1,20 @@
+{
+    "name": "HTTP Bin",
+    "operations": {
+        "Get": {
+            "httpMethod": "GET",
+            "uri": "get",
+            "summary": "Gets some JSON"
+        },
+        "Get404": {
+            "httpMethod": "GET",
+            "uri": "get/404",
+            "summary": "Gets a 404 response"
+        },
+        "GetRobots": {
+            "httpMethod": "GET",
+            "uri": "robots.txt",
+            "summary": "Gets robots.txt"
+        }
+    }
+}

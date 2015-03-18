@@ -13,20 +13,49 @@ class RawGuzzleContextSpec extends ObjectBehavior
         $this->shouldHaveType('Behat\GuzzleExtension\Context\RawGuzzleContext');
     }
 
-    public function it_executes_a_command()
+    public function it_executes_a_command_that_returns_a_404()
     {
-        $client = new Client('https://api.travis-ci.org');
+        $client = new Client('http://httpbin.org');
         $client->setDescription(
             ServiceDescription::factory(
-                __DIR__ . '/../../../../config/service.json'
+                __DIR__ . '/test.json'
             )
         );
 
         $this->setGuzzleClient($client);
-        $this->executeCommand(
-            'GetReposBuilds',
-            array('slug' => 'teaandcode/behat-guzzle-extension')
+        $this->executeCommand('Get404');
+        $this->getGuzzleResponse()
+            ->shouldReturnAnInstanceOf('Guzzle\Http\Message\Response');
+    }
+
+    public function it_executes_a_command_that_returns_nothing()
+    {
+        $client = new Client('http://httpbin.org');
+        $client->setDescription(
+            ServiceDescription::factory(
+                __DIR__ . '/test.json'
+            )
         );
+
+        $this->setGuzzleClient($client);
+        $this->executeCommand('GetRobots');
+        $this->getGuzzleResponse()
+            ->shouldReturnAnInstanceOf('Guzzle\Http\Message\Response');
+    }
+
+    public function it_executes_a_command()
+    {
+        $client = new Client('http://httpbin.org');
+        $client->setDescription(
+            ServiceDescription::factory(
+                __DIR__ . '/test.json'
+            )
+        );
+
+        $this->setGuzzleClient($client);
+        $this->executeCommand('Get');
+        $this->getGuzzleResponse()
+            ->shouldReturnAnInstanceOf('Guzzle\Http\Message\Response');
     }
 
     public function it_does_not_get_a_guzzle_client()
