@@ -50,6 +50,8 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command
+     * Example: When I authenicated as "bruceWayne"
+     * Example: Given I authenicated as "bruceWayne"
      *
      * @Given /^I authenticated as "(\S+)"$/
      * @When /^I authenticate as "(\S+)"$/
@@ -70,6 +72,8 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command
+     * Example: When I called "heroes/list"
+     * Example: Given I called "heroes/list"
      *
      * @Given /^I called "(\S+)"$/
      * @When /^I call "(\S+)"$/
@@ -81,7 +85,24 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command with text
-     *
+     * Example: Given I called "/heroes/list" with the following body text:
+     *          """
+     *          [
+     *             {
+     *               "body": "I am not batman I take serious offense to any claims suggesting such outlandish remarks.",
+     *                "id" : 1
+     *             }
+     *          ]
+     *          """
+     * Example: When I called "/heroes/list" with the following body text:
+     *          """
+     *          [
+     *             {
+     *               "body": "I am not batman I take serious offense to any claims suggesting such outlandish remarks.",
+     *                "id" : 1
+     *             }
+     *          ]
+     *          """
      * @Given /^I called "(\S+)" with the following body text:$/
      * @When /^I call "(\S+)" with the following body text:$/
      */
@@ -97,6 +118,14 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command with fields
+     * Example: Given I called "/heroes/list" with the following values:
+     *              | userId | 27 |
+     *              | username | bruceWayne |
+     *              | password | iLoveBats123 |
+     * Example: When I called "/heroes/list" with the following values:
+     *              | userId | 27 |
+     *              | username | bruceWayne |
+     *              | password | iLoveBats123 |
      *
      * @Given /^I called "(\S+)" with the following value(s?):$/
      * @When /^I call "(\S+)" with the following value(s?):$/
@@ -117,7 +146,28 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command with fields
-     *
+     * Example: Given I called "/heroes/list" with the following values from JSON:
+     *          """
+     *          [
+     *             {
+     *               "postId": 1,
+     *               "id": 1,
+     *               "name": "I know who Batman is",
+     *               "email": "Eliseo@gardner.biz",
+     *             }
+     *          ]
+     *          """
+     * Example: When I called "/heroes/list" with the following values from JSON:
+     *          """
+     *          [
+     *             {
+     *               "postId": 1,
+     *               "id": 1,
+     *               "name": "I know who Batman is",
+     *               "email": "Eliseo@gardner.biz",
+     *             }
+     *          ]
+     *          """
      * @Given /^I called "(\S+)" with the following value(s?) from JSON:$/
      * @When /^I call "(\S+)" with the following value(s?) from JSON:$/
      */
@@ -133,6 +183,10 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * @Then I get a response with a status code of :code
+     * Example: And I get a response with a status code of 503
+     * Example: Then I get a response with a status code of 503
+     *
+     * @param string $code status code
      */
     public function iGetAResponseWithAStatusCodeOf($code)
     {
@@ -148,6 +202,8 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * @Then I get a successful response
+     * Example: And I get successful response
+     * Example: Then I get successful response
      */
     public function iGetASuccessfulResponse()
     {
@@ -161,6 +217,8 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * @Then I get an unsuccessful response with a status code of :code
+     * Example: And I get unsuccessful response with a status code of 503
+     * Example: Then I get unsuccessful response with a status code of 404
      */
     public function iGetAnUnsuccessfulResponseWithAStatusCodeOf($code)
     {
@@ -173,6 +231,12 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * @Then the response contains the following value(s):
+     * Example: Then the response contains the following values:
+     *              | userId | 27 |
+     *              | username | bruceWayne |
+     *              | postId | 2 |
+     * Example: And the response contains the following value:
+     *              | userId | 27 |
      */
     public function theResponseContainsTheFollowingValue(TableNode $table)
     {
@@ -193,6 +257,12 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * @Then the response contains :count resource(s) with the following data:
+     * Example: Then the response contains 3 resources with the following values:
+     *              | userId | 27 |
+     *              | username | bruceWayne |
+     *              | postId | 2 |
+     * Example: And the response contains 1 resource with the following value:
+     *              | userId | 27 |
      */
     public function theResponseContainsResourceWithTheFollowingData(
         $count,
@@ -217,6 +287,8 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * @Then /^the response is stored as "(\S+)"$/
+     * Example: Then the response is stored as "heroes/list/users/batman"
+     * Example: And the response is stored as "heroes/list/users/batman"
      */
     public function theResponseIsStored($name)
     {
