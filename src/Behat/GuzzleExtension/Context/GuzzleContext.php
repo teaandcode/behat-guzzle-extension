@@ -50,8 +50,11 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command
-     * Example: When I authenicated as "bruceWayne"
-     * Example: Given I authenicated as "bruceWayne"
+     *
+     * Example: Given I authenticated as "bruce.wayne"
+     * Example: When I authenticate as "bruce.wayne"
+     *
+     * @param string $user Key from users array to identify user
      *
      * @Given /^I authenticated as "(\S+)"$/
      * @When /^I authenticate as "(\S+)"$/
@@ -72,8 +75,11 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command
-     * Example: When I called "heroes/list"
-     * Example: Given I called "heroes/list"
+     *
+     * Example: Given I called "getHeroesList"
+     * Example: When I call "getHeroesList"
+     *
+     * @param string $command Command in service descriptions file
      *
      * @Given /^I called "(\S+)"$/
      * @When /^I call "(\S+)"$/
@@ -85,24 +91,41 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command with text
-     * Example: Given I called "/heroes/list" with the following body text:
-     *          """
-     *          [
-     *             {
-     *               "body": "I am not batman I take serious offense to any claims suggesting such outlandish remarks.",
-     *                "id" : 1
-     *             }
-     *          ]
-     *          """
-     * Example: When I called "/heroes/list" with the following body text:
-     *          """
-     *          [
-     *             {
-     *               "body": "I am not batman I take serious offense to any claims suggesting such outlandish remarks.",
-     *                "id" : 1
-     *             }
-     *          ]
-     *          """
+     *
+     * Example: Given I called "postCertificates" with the following body text:
+     *   """
+     *   <?xml version="1.0" encoding="UTF-8"?>
+     *   <Header userId="1" />
+     *   <Body>
+     *     <Document type="certificate" encoding="uft-8" noPages="1">
+     *       <XML>...</XML>
+     *       <Image>...</Image>
+     *     </Document>
+     *     <Document type="certificate" encoding="uft-8" noPages="1">
+     *       <XML>...</XML>
+     *       <Image>...</Image>
+     *     </Document>
+     *   </Body>
+     *   """
+     * Example: When I call "postCertificates" with the following body text:
+     *   """
+     *   <?xml version="1.0" encoding="UTF-8"?>
+     *   <Header userId="1" />
+     *   <Body>
+     *     <Document type="certificate" encoding="uft-8" noPages="1">
+     *       <XML>...</XML>
+     *       <Image>...</Image>
+     *     </Document>
+     *     <Document type="certificate" encoding="uft-8" noPages="1">
+     *       <XML>...</XML>
+     *       <Image>...</Image>
+     *     </Document>
+     *   </Body>
+     *   """
+     *
+     * @param string       $command Command in service descriptions file
+     * @param PyStringNode $string  Text specified in feature
+     *
      * @Given /^I called "(\S+)" with the following body text:$/
      * @When /^I call "(\S+)" with the following body text:$/
      */
@@ -118,14 +141,16 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command with fields
-     * Example: Given I called "/heroes/list" with the following values:
-     *              | userId | 27 |
-     *              | username | bruceWayne |
-     *              | password | iLoveBats123 |
-     * Example: When I called "/heroes/list" with the following values:
-     *              | userId | 27 |
-     *              | username | bruceWayne |
-     *              | password | iLoveBats123 |
+     *
+     * Example: Given I called "putHero" with the following values:
+     *   | description | I am not batman |
+     *   | id          | 1               |
+     * Example: When I call "putHero" with the following values:
+     *   | description | I am not batman |
+     *   | id          | 1               |
+     *
+     * @param string    $command Command in service descriptions file
+     * @param TableNode $table   Values specified in feature
      *
      * @Given /^I called "(\S+)" with the following value(s?):$/
      * @When /^I call "(\S+)" with the following value(s?):$/
@@ -146,28 +171,29 @@ class GuzzleContext extends RawGuzzleContext
 
     /**
      * Calls specified command with fields
-     * Example: Given I called "/heroes/list" with the following values from JSON:
-     *          """
-     *          [
-     *             {
-     *               "postId": 1,
-     *               "id": 1,
-     *               "name": "I know who Batman is",
-     *               "email": "Eliseo@gardner.biz",
-     *             }
-     *          ]
-     *          """
-     * Example: When I called "/heroes/list" with the following values from JSON:
-     *          """
-     *          [
-     *             {
-     *               "postId": 1,
-     *               "id": 1,
-     *               "name": "I know who Batman is",
-     *               "email": "Eliseo@gardner.biz",
-     *             }
-     *          ]
-     *          """
+     *
+     * Example: Given I called "putHero" with the following values from JSON:
+     *   """
+     *     [
+     *       {
+     *         "description": "I am not batman",
+     *         "id": 1
+     *       }
+     *     ]
+     *   """
+     * Example: When I call "putHero" with the following values from JSON:
+     *   """
+     *     [
+     *       {
+     *         "description": "I am not batman",
+     *         "id": 1
+     *       }
+     *     ]
+     *   """
+     *
+     * @param string       $command Command in service descriptions file
+     * @param PyStringNode $string  Values specified in feature as JSON
+     *
      * @Given /^I called "(\S+)" with the following value(s?) from JSON:$/
      * @When /^I call "(\S+)" with the following value(s?) from JSON:$/
      */
@@ -182,11 +208,14 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
-     * @Then I get a response with a status code of :code
+     * Checks status code in reponse
+     *
      * Example: And I get a response with a status code of 503
      * Example: Then I get a response with a status code of 503
      *
-     * @param string $code status code
+     * @param string $code Expected HTTP status code
+     *
+     * @Then I get a response with a status code of :code
      */
     public function iGetAResponseWithAStatusCodeOf($code)
     {
@@ -201,9 +230,12 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
-     * @Then I get a successful response
+     * Checks response is successful
+     *
      * Example: And I get successful response
      * Example: Then I get successful response
+     *
+     * @Then I get a successful response
      */
     public function iGetASuccessfulResponse()
     {
@@ -216,9 +248,14 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
-     * @Then I get an unsuccessful response with a status code of :code
+     * Checks response is unsuccessful with specified status code
+     *
      * Example: And I get unsuccessful response with a status code of 503
-     * Example: Then I get unsuccessful response with a status code of 404
+     * Example: Then I get unsuccessful response with a status code of 503
+     *
+     * @param string $code Expected HTTP status code
+     *
+     * @Then I get an unsuccessful response with a status code of :code
      */
     public function iGetAnUnsuccessfulResponseWithAStatusCodeOf($code)
     {
@@ -230,13 +267,18 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
-     * @Then the response contains the following value(s):
+     * Check response contains specified values
+     *
      * Example: Then the response contains the following values:
-     *              | userId | 27 |
-     *              | username | bruceWayne |
-     *              | postId | 2 |
+     *   | id         | 27          |
+     *   | importance | 3           |
+     *   | username   | bruce.wayne |
      * Example: And the response contains the following value:
-     *              | userId | 27 |
+     *   | id | 27 |
+     *
+     * @param TableNode $table Values specified in feature
+     *
+     * @Then the response contains the following value(s):
      */
     public function theResponseContainsTheFollowingValue(TableNode $table)
     {
@@ -256,13 +298,19 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
+     * 
+     * Example: Then the response contains 2 resources with the following data:
+     *   | id | importance | username    |
+     *   | 27 | 3          | bruce.wayne |
+     *   | 34 | 2          | clark.kent  |
+     * Example: And the response contains 1 resource with the following data:
+     *   | id | importance | username    |
+     *   | 27 | 3          | bruce.wayne |
+     *
+     * @param integer   $count Number of resources received
+     * @param TableNode $table Values specified in feature
+     *
      * @Then the response contains :count resource(s) with the following data:
-     * Example: Then the response contains 3 resources with the following values:
-     *              | userId | 27 |
-     *              | username | bruceWayne |
-     *              | postId | 2 |
-     * Example: And the response contains 1 resource with the following value:
-     *              | userId | 27 |
      */
     public function theResponseContainsResourceWithTheFollowingData(
         $count,
@@ -286,9 +334,14 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
+     * Store response for later use in the scenario
+     *
+     * Example: Then the response is stored as "heroes"
+     * Example: And the response is stored as "heroes"
+     *
+     * @param string $name Name to use when storing response
+     *
      * @Then /^the response is stored as "(\S+)"$/
-     * Example: Then the response is stored as "heroes/list/users/batman"
-     * Example: And the response is stored as "heroes/list/users/batman"
      */
     public function theResponseIsStored($name)
     {
