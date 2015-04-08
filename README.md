@@ -21,6 +21,25 @@ Guzzle extension for Behat is an integration layer between Behat 3.0+ and Guzzle
 * Add documentation
 * Add language support
 
+## Configuration
+
+### Example Configuration
+
+```
+default:
+    extensions:
+        Behat\GuzzleExtension:
+            base_url: http://127.0.0.1
+            service_descriptions: %paths.base%/app/config/service.json
+    suites:
+        default:
+            contexts:
+                - Behat\GuzzleExtension\Context\GuzzleContext:
+                    users:
+                        test.user.1: B8E...1AF
+                        test.user.2: A6B...8E6
+```
+
 ## Copyright
 
 Copyright (c) 2015 Dave Nash (knasher). See LICENSE for details.
