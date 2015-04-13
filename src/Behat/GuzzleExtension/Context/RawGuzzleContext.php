@@ -38,7 +38,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     /**
      * @var string
      */
-    const GUZZLE_EXTENSION_VERSION = '0.3.2';
+    const GUZZLE_EXTENSION_VERSION = '0.3.3';
 
     /**
      * @var Client
@@ -94,7 +94,7 @@ class RawGuzzleContext implements GuzzleAwareContext
         }
 
         $this->response = $command->getResponse();
-        $this->result   = $result;
+        $this->result = $result;
     }
 
     /**

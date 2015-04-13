@@ -198,7 +198,7 @@ class GuzzleContext extends RawGuzzleContext
      * @When /^I call "(\S+)" with the following value(s?) from JSON:$/
      */
     public function iCallCommandWithValueFromJSON(
-                     $command,
+        $command,
         PyStringNode $string
     ) {
         $this->executeCommand(

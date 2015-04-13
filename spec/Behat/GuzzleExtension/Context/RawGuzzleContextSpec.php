@@ -25,7 +25,7 @@ class RawGuzzleContextSpec extends ObjectBehavior
     {
         $client = new Client(array(
             'baseUrl' => 'foo',
-            'config'  => array()
+            'config' => array()
         ));
 
         $this->setGuzzleClient($client);

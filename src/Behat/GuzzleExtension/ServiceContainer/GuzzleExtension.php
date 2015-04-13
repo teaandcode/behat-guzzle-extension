@@ -97,7 +97,7 @@ class GuzzleExtension implements ExtensionInterface
                 'Guzzle\Service\Client',
                 array(
                     'baseUrl' => $container->getParameter('guzzle.base_url'),
-                    'config'  => $container->getParameter('guzzle.parameters')
+                    'config' => $container->getParameter('guzzle.parameters')
                 )
             )
         );

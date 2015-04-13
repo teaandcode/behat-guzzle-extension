@@ -52,7 +52,7 @@ class GuzzleAwareInitializer implements ContextInitializer
      */
     public function __construct(Client $client, array $parameters)
     {
-        $this->client     = $client;
+        $this->client = $client;
         $this->parameters = $parameters;
 
         if (!empty($parameters['service_descriptions'])) {

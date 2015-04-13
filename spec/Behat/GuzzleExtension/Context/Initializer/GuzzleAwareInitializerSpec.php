@@ -14,7 +14,7 @@ class GuzzleAwareInitializerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $client,
             array(
-                'base_url'             => 'https://api.travis-ci.org',
+                'base_url' => 'https://api.travis-ci.org',
                 'service_descriptions' => 'config/service.json'
             )
         );
@@ -39,7 +39,7 @@ class GuzzleAwareInitializerSpec extends ObjectBehavior
     {
         $context->setGuzzleClient($client)->shouldBeCalled();
         $context->setGuzzleParameters(array(
-            'base_url'             => 'https://api.travis-ci.org',
+            'base_url' => 'https://api.travis-ci.org',
             'service_descriptions' => 'config/service.json'
         ))->shouldBeCalled();
 

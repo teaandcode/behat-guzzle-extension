@@ -21,8 +21,8 @@ class GuzzleExtensionSpec extends ObjectBehavior
     }
 
     public function it_has_specific_configuration(
-         ArrayNodeDefinition $builder,
-                 NodeBuilder $nodeBuilder,
+        ArrayNodeDefinition $builder,
+        NodeBuilder $nodeBuilder,
         ScalarNodeDefinition $node
     ) {
         $builder->addDefaultsIfNotSet()
@@ -94,7 +94,7 @@ class GuzzleExtensionSpec extends ObjectBehavior
                 'Guzzle\Service\Client',
                 array(
                     'baseUrl' => null,
-                    'config'  => null
+                    'config' => null
                 )
             )
         )->shouldBeCalled();
