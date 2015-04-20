@@ -33,7 +33,7 @@ php composer.phar require --dev teaandcode/behat-guzzle-extension
 
 ### Example Configuration
 
-```
+```yaml
 default:
     extensions:
         Behat\GuzzleExtension:
