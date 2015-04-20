@@ -21,6 +21,14 @@ Guzzle extension for Behat is an integration layer between Behat 3.0+ and Guzzle
 * Add documentation
 * Add language support
 
+## Installation
+
+Add to your project with Composer (*dev*) 
+
+```
+php composer.phar require --dev teaandcode/behat-guzzle-extension
+```
+
 ## Configuration
 
 ### Example Configuration
