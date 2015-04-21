@@ -38,7 +38,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     /**
      * @var string
      */
-    const GUZZLE_EXTENSION_VERSION = '0.3.3';
+    const GUZZLE_EXTENSION_VERSION = '0.3.4';
 
     /**
      * @var Client
