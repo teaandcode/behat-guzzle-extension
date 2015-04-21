@@ -224,7 +224,7 @@ class GuzzleContext extends RawGuzzleContext
         if ($actual != $code) {
             throw new ClientErrorResponseException(
                 'Actual status code ' . $actual . ' does not match expected ' .
-                'status code ' . $code .
+                'status code ' . $code . ' with message: ' .
                 $this->getGuzzleResponse()->getMessage()
             );
         }
