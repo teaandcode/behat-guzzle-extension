@@ -67,7 +67,9 @@ class GuzzleExtension implements ExtensionInterface
      */
     public function load(ContainerBuilder $container, array $config)
     {
-        $container->setParameter('guzzle.base_url', $config['base_url']);
+        $baseUrl = rtrim($config['base_url'], '/');
+
+        $container->setParameter('guzzle.base_url', $baseUrl);
         $container->setParameter('guzzle.parameters', $config);
 
         $this->loadClient($container);
