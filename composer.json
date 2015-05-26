@@ -1,8 +1,8 @@
 {
     "name": "teaandcode/behat-guzzle-extension",
     "type": "behat-extension",
-    "description": "Guzzle extension for Behat",
-    "keywords": ["web", "test", "curl"],
+    "description": "Behat API extension using Guzzle Service Descriptions to functionally test API endpoints",
+    "keywords": ["web", "test", "behat", "curl", "guzzle", "api", "end-to-end"],
     "homepage": "https://github.com/teaandcode/behat-guzzle-extension",
     "license": "MIT",
     "authors": [
