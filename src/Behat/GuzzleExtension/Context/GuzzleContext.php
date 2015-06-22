@@ -299,6 +299,31 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
+     * Check response contains specified values from JSON
+     *
+     * Example: The the response contains the following values from JSON:
+     *   """
+     *   """
+     * Example: And the response contains the following value from JSON:
+     *   """
+     *   """
+     *
+     * @param PyStringNode $string Values specified in feature as JSON
+     *
+     * @Then the response contains the following value(s) from JSON:
+     */
+    public function theResponseContainsTheFollowingValueFromJSON(
+        PyStringNode $string
+    ) {
+        $data = json_decode($string, true);
+        $item = $this->getGuzzleResult();
+
+        $data = $this->addStoredValuesToArray($data);
+
+        $this->compareValues($item, $data);
+    }
+
+    /**
      * 
      * Example: Then the response contains 2 resources with the following data:
      *   | id | importance | username    |
@@ -317,7 +342,7 @@ class GuzzleContext extends RawGuzzleContext
         $count,
         TableNode $table
     ) {
-        $list   = $this->getGuzzleResult();
+        $list = $this->getGuzzleResult();
         $length = count($list);
 
         if ($length != $count) {
@@ -401,5 +426,28 @@ class GuzzleContext extends RawGuzzleContext
         }
 
         return $string;
+    }
+
+    /**
+     * Adds stored values to array
+     *
+     * @param array $array Array containing stored field markers
+     *
+     * @access protected
+     * @return array
+     */
+    protected function addStoredValuesToArray($array)
+    {
+        foreach ($array as $field => $value) {
+            if (is_array($value)) {
+                $value = $this->addStoredValuesToArray($value);
+            } else {
+                $value = $this->addStoredValues($value);
+            }
+
+            $array[$field] = $value;
+        }
+
+        return $array;
     }
 }

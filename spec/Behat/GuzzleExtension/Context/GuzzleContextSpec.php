@@ -151,6 +151,26 @@ class GuzzleContextSpec extends ObjectBehavior
         $this->theResponseContainsTheFollowingValue($table);
     }
 
+    public function it_has_i_call_command_with_value_from_json_and_response_contains_value_from_json()
+    {
+        $client = $this->getMockedClient(
+            new Response(
+                200,
+                array(
+                    'Content-Type' => 'application/json'
+                ),
+                '{"foo":"bar","fu":[{"id":4},{"id":6}]}'
+            )
+        );
+
+        $string = new PyStringNode(array('{"test":"foo"}'), 1);
+        $table  = new PyStringNode(array('{"foo":"bar","fu":[{"id":4}]}'), 1);
+
+        $this->setGuzzleClient($client);
+        $this->iCallCommandWithValueFromJSON('Mock', $string);
+        $this->theResponseContainsTheFollowingValueFromJSON($table);
+    }
+
     public function it_has_i_call_command_but_response_contains_a_wrong_value()
     {
         $client = $this->getMockedClient(
