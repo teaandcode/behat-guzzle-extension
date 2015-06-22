@@ -303,9 +303,23 @@ class GuzzleContext extends RawGuzzleContext
      *
      * Example: The the response contains the following values from JSON:
      *   """
+     *     {
+     *       "name": "Test Name",
+     *       "users": [
+     *         {
+     *           "id": 3
+     *         },
+     *         {
+     *           "id": 6
+     *         }
+     *       ]
+     *     }
      *   """
      * Example: And the response contains the following value from JSON:
      *   """
+     *     {
+     *       "name": "Test Name"
+     *     }
      *   """
      *
      * @param PyStringNode $string Values specified in feature as JSON
