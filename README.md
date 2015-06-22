@@ -1,12 +1,12 @@
 # Behat Guzzle Extension
 
-[![Join the chat at https://gitter.im/teaandcode/behat-guzzle-extension](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/teaandcode/behat-guzzle-extension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 [![Build Status](https://travis-ci.org/teaandcode/behat-guzzle-extension.svg?branch=master)](https://travis-ci.org/teaandcode/behat-guzzle-extension)
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/badges/build.png?b=master)](https://scrutinizer-ci.com/g/teaandcode/behat-guzzle-extension/build-status/master)
+
+[![Join the chat at https://gitter.im/teaandcode/behat-guzzle-extension](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/teaandcode/behat-guzzle-extension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Guzzle extension for Behat is an integration layer between Behat 3.0+ and Guzzle
 3.5+ and it provides:
