@@ -329,12 +329,10 @@ class GuzzleContext extends RawGuzzleContext
     public function theResponseContainsTheFollowingValueFromJSON(
         PyStringNode $string
     ) {
-        $data = json_decode($string, true);
-        $item = $this->getGuzzleResult();
-
-        $data = $this->addStoredValuesToArray($data);
-
-        $this->compareValues($item, $data);
+        $this->compareValues(
+            $this->getGuzzleResult(),
+            json_decode($this->addStoredValues($string->getRaw()), true)
+        );
     }
 
     /**
@@ -440,28 +438,5 @@ class GuzzleContext extends RawGuzzleContext
         }
 
         return $string;
-    }
-
-    /**
-     * Adds stored values to array
-     *
-     * @param array $array Array containing stored field markers
-     *
-     * @access protected
-     * @return array
-     */
-    protected function addStoredValuesToArray($array)
-    {
-        foreach ($array as $field => $value) {
-            if (is_array($value)) {
-                $value = $this->addStoredValuesToArray($value);
-            } else {
-                $value = $this->addStoredValues($value);
-            }
-
-            $array[$field] = $value;
-        }
-
-        return $array;
     }
 }
