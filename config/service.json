@@ -1,14 +1,24 @@
 {
     "name": "Travis API",
     "operations": {
+        "GetConfig": {
+            "httpMethod": "GET",
+            "uri": "config",
+            "summary": "Gets the config"
+        },
         "GetReposBuilds": {
             "httpMethod": "GET",
-            "uri": "repos/{slug}/builds",
+            "uri": "repos/{profile}/{repo}/builds",
             "summary": "Gets the last build for repo",
             "parameters": {
-                "slug": {
+                "profile": {
                     "location": "uri",
-                    "description": "Repo slug from GitHub",
+                    "description": "Profile name from GitHub",
+                    "required": true
+                },
+                "repo": {
+                    "location": "uri",
+                    "description": "Repo name from GitHub",
                     "required": true
                 },
                 "number": {
