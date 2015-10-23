@@ -267,4 +267,32 @@ class GuzzleContextSpec extends ObjectBehavior
             '\Guzzle\Http\Exception\ClientErrorResponseException'
         )->duringTheResponseContainsResourceWithTheFollowingData(1, $table);
     }
+
+    public function it_should_retrieve_stored_values_by_key()
+    {
+        $client1 = $this->getMockedClient(
+            new Response(
+                200,
+                array(
+                    'Content-Type' => 'application/json'
+                ),
+                '[{"foo":"bar"},{"foo":"fu"}]'
+            )
+        );
+
+        $output  = new TableNode(
+            array(
+                array('foo'),
+                array('bar'),
+                array('fu')
+            )
+        );
+
+        $this->setGuzzleClient($client1);
+        $this->iCallCommand('Mock');
+        $this->theResponseContainsResourceWithTheFollowingData(2, $output);
+        $this->theResponseIsStored('test');
+
+        $this->getStoredValue('test');
+    }
 }
