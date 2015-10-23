@@ -336,7 +336,7 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
-     * 
+     *
      * Example: Then the response contains 2 resources with the following data:
      *   | id | importance | username    |
      *   | 27 | 3          | bruce.wayne |
@@ -384,6 +384,19 @@ class GuzzleContext extends RawGuzzleContext
     public function theResponseIsStored($name)
     {
         $this->storedResult[$name] = $this->getGuzzleResult();
+    }
+
+    /**
+     * Get stored value
+     *
+     * @param string $name Name used when storing response
+     *
+     * @access public
+     * @return mixed
+     */
+    public function getStoredValue($name)
+    {
+        return $this->storedResult[$name];
     }
 
     /**
