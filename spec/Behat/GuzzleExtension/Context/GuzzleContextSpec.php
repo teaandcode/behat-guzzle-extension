@@ -295,4 +295,44 @@ class GuzzleContextSpec extends ObjectBehavior
 
         $this->getStoredValue('test');
     }
+
+    public function it_compares_response_body_with_a_pystring_including_stored_values()
+    {
+        $client1 = $this->getMockedClient(
+            new Response(
+                200,
+                array(
+                    'Content-Type' => 'text/css'
+                ),
+                'Id,Name,Age,Comment' . PHP_EOL .
+                '1,"Richard Saunders",33,"some comment"' . PHP_EOL .
+                '2,"Dave Nash",,"another comment"' . PHP_EOL .
+                '3,"Ben Eppel",,"yet another comment"'
+            )
+        );
+
+        $string = new PyStringNode(
+            array(
+                'Id,Name,Age,Comment',
+                '1,"Richard Saunders",33,"some comment"',
+                '2,"Dave Nash",,"another comment"',
+                '3,{stored[person][name]},{stored[person][age]},' .
+                '{stored[person][comment]}',
+            ),
+            1
+        );
+
+        $this->setStoredValue(
+            'person',
+            array(
+                'name' => '"Ben Eppel"',
+                'age' => '',
+                'comment' => '"yet another comment"',
+            )
+        );
+
+        $this->setGuzzleClient($client1);
+        $this->iCallCommand('Mock');
+        $this->theResponseBodyMatches($string);
+    }
 }
