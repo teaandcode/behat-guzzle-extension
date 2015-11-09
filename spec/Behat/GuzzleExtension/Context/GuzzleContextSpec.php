@@ -4,6 +4,7 @@ namespace spec\Behat\GuzzleExtension\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Response;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Service\Client;
@@ -334,5 +335,68 @@ class GuzzleContextSpec extends ObjectBehavior
         $this->setGuzzleClient($client1);
         $this->iCallCommand('Mock');
         $this->theResponseBodyMatches($string);
+    }
+
+    public function it_should_throw_exception_when_expected_value_missing_from_array_of_actual_values()
+    {
+        $client = $this->getMockedClient(
+            new Response(
+                200,
+                array(
+                    'Content-Type' => 'application/json'
+                ),
+                '{"id":1}'
+            )
+        );
+
+        $string = new PyStringNode(array('{"test":"foo"}'), 1);
+        $table  = new PyStringNode(array('{"id":1,"name":"Mr Person"}'), 1);
+
+        $this->setGuzzleClient($client);
+        $this->iCallCommandWithValueFromJSON('Mock', $string);
+
+        $this->shouldThrow(
+            new ClientErrorResponseException(
+                'Expected value Mr Person ' .
+                'is missing from array of actual ' .
+                'values at position name'
+            )
+        )->during(
+            'theResponseContainsTheFollowingValueFromJSON',
+            array($table)
+        );
+    }
+
+    public function it_should_throw_exception_when_expected_json_encoded_value_missing_from_array_of_actual_values()
+    {
+        $client = $this->getMockedClient(
+            new Response(
+                200,
+                array(
+                    'Content-Type' => 'application/json'
+                ),
+                '[{"id":1}]'
+            )
+        );
+
+        $string = new PyStringNode(array('{"test":"foo"}'), 1);
+        $table  = new PyStringNode(
+            array('[{"id":1},{"id":2}]'),
+            1
+        );
+
+        $this->setGuzzleClient($client);
+        $this->iCallCommandWithValueFromJSON('Mock', $string);
+
+        $this->shouldThrow(
+            new ClientErrorResponseException(
+                'Expected value {"id":2} is ' .
+                'missing from array of actual ' .
+                'values at position 1'
+            )
+        )->during(
+            'theResponseContainsTheFollowingValueFromJSON',
+            array($table)
+        );
     }
 }
