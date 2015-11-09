@@ -242,10 +242,20 @@ class RawGuzzleContext implements GuzzleAwareContext
      */
     protected function compareArrays(array $input, array $control)
     {
-        foreach ($input as $field => $actual) {
-            if (isset($control[$field])) {
-                $this->compareValues($actual, $control[$field]);
+        foreach ($control as $field => $expected) {
+            if (!array_key_exists($field, $input)) {
+                throw new ClientErrorResponseException(
+                    sprintf(
+                        'Expected value %s is missing from array ' .
+                        'of actual values at position %s',
+                        is_array($expected) ?
+                        json_encode($expected) :
+                        $expected,
+                        $field
+                    )
+                );
             }
+            $this->compareValues($input[$field], $expected);
         }
     }
 
