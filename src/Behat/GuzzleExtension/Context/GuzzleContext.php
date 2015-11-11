@@ -268,6 +268,29 @@ class GuzzleContext extends RawGuzzleContext
     }
 
     /**
+     * Checks response body matches the following value
+     *
+     * Example: The the response body matches the following:
+     *   """
+     *   Id,Name,Age,Comment
+     *   1,"Richard Saunders",33,"some comment"
+     *   2,"Dave Nash",,"another comment"
+     *   3,{stored[person][name]},{stored[person][age]},{stored[person][comment]}
+     *   """
+     *
+     * @param PyStringNode $body
+     *
+     * @Then the response body matches the following:
+     */
+    public function theResponseBodyMatches(PyStringNode $body)
+    {
+        $this->compareValues(
+            $this->getGuzzleResponse()->getBody(true),
+            $this->addStoredValues($body->getRaw())
+        );
+    }
+
+    /**
      * Check response contains specified values
      *
      * Example: Then the response contains the following values:
@@ -397,6 +420,22 @@ class GuzzleContext extends RawGuzzleContext
     public function getStoredValue($name)
     {
         return $this->storedResult[$name];
+    }
+
+    /**
+     * Set stored value
+     *
+     * @param string $name Name used for stored value
+     * @param string $value Value stored under name
+     *
+     * @access public
+     * @return $this
+     */
+    public function setStoredValue($name, $value)
+    {
+        $this->storedResult[$name] = $value;
+
+        return $this;
     }
 
     /**

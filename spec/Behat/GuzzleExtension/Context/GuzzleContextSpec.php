@@ -4,6 +4,7 @@ namespace spec\Behat\GuzzleExtension\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Response;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Service\Client;
@@ -294,5 +295,108 @@ class GuzzleContextSpec extends ObjectBehavior
         $this->theResponseIsStored('test');
 
         $this->getStoredValue('test');
+    }
+
+    public function it_compares_response_body_with_a_pystring_including_stored_values()
+    {
+        $client1 = $this->getMockedClient(
+            new Response(
+                200,
+                array(
+                    'Content-Type' => 'text/css'
+                ),
+                'Id,Name,Age,Comment' . PHP_EOL .
+                '1,"Richard Saunders",33,"some comment"' . PHP_EOL .
+                '2,"Dave Nash",,"another comment"' . PHP_EOL .
+                '3,"Ben Eppel",,"yet another comment"'
+            )
+        );
+
+        $string = new PyStringNode(
+            array(
+                'Id,Name,Age,Comment',
+                '1,"Richard Saunders",33,"some comment"',
+                '2,"Dave Nash",,"another comment"',
+                '3,{stored[person][name]},{stored[person][age]},' .
+                '{stored[person][comment]}',
+            ),
+            1
+        );
+
+        $this->setStoredValue(
+            'person',
+            array(
+                'name' => '"Ben Eppel"',
+                'age' => '',
+                'comment' => '"yet another comment"',
+            )
+        );
+
+        $this->setGuzzleClient($client1);
+        $this->iCallCommand('Mock');
+        $this->theResponseBodyMatches($string);
+    }
+
+    public function it_should_throw_exception_when_expected_value_missing_from_array_of_actual_values()
+    {
+        $client = $this->getMockedClient(
+            new Response(
+                200,
+                array(
+                    'Content-Type' => 'application/json'
+                ),
+                '{"id":1}'
+            )
+        );
+
+        $string = new PyStringNode(array('{"test":"foo"}'), 1);
+        $table  = new PyStringNode(array('{"id":1,"name":"Mr Person"}'), 1);
+
+        $this->setGuzzleClient($client);
+        $this->iCallCommandWithValueFromJSON('Mock', $string);
+
+        $this->shouldThrow(
+            new ClientErrorResponseException(
+                'Expected value Mr Person ' .
+                'is missing from array of actual ' .
+                'values at position name'
+            )
+        )->during(
+            'theResponseContainsTheFollowingValueFromJSON',
+            array($table)
+        );
+    }
+
+    public function it_should_throw_exception_when_expected_json_encoded_value_missing_from_array_of_actual_values()
+    {
+        $client = $this->getMockedClient(
+            new Response(
+                200,
+                array(
+                    'Content-Type' => 'application/json'
+                ),
+                '[{"id":1}]'
+            )
+        );
+
+        $string = new PyStringNode(array('{"test":"foo"}'), 1);
+        $table  = new PyStringNode(
+            array('[{"id":1},{"id":2}]'),
+            1
+        );
+
+        $this->setGuzzleClient($client);
+        $this->iCallCommandWithValueFromJSON('Mock', $string);
+
+        $this->shouldThrow(
+            new ClientErrorResponseException(
+                'Expected value {"id":2} is ' .
+                'missing from array of actual ' .
+                'values at position 1'
+            )
+        )->during(
+            'theResponseContainsTheFollowingValueFromJSON',
+            array($table)
+        );
     }
 }
