@@ -337,6 +337,35 @@ class GuzzleContextSpec extends ObjectBehavior
         $this->theResponseBodyMatches($string);
     }
 
+    public function it_should_throw_exception_when_expected_string_missing_from_actual_result()
+    {
+        $client = $this->getMockedClient(
+            new Response(
+                200,
+                array(
+                    'Content-Type' => 'application/json'
+                ),
+                '{"message":"E-mail address foo@bar is invalid"}'
+            )
+        );
+
+        $value = new PyStringNode(array('{"test":"foo"}'), 1);
+        $string = new PyStringNode(array('fu@bar'), 1);
+
+        $this->setGuzzleClient($client);
+        $this->iCallCommandWithValueFromJSON('Mock', $value);
+
+        $this->shouldThrow(
+            new ClientErrorResponseException(
+                'Actual response {"message":"E-mail address foo@bar is ' .
+                'invalid"} does not contain string fu@bar'
+            )
+        )->during(
+            'theResponseContainsTheFollowingString',
+            array($string)
+        );
+    }
+
     public function it_should_throw_exception_when_expected_value_missing_from_array_of_actual_values()
     {
         $client = $this->getMockedClient(
