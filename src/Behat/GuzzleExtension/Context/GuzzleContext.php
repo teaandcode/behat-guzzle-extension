@@ -273,9 +273,9 @@ class GuzzleContext extends RawGuzzleContext
      * Example: The the response body matches the following:
      *   """
      *   Id,Name,Age,Comment
-     *   1,"Richard Saunders",33,"some comment"
-     *   2,"Dave Nash",,"another comment"
-     *   3,{stored[person][name]},{stored[person][age]},{stored[person][comment]}
+     *   1,"Richard Saunders",33,"some description"
+     *   2,"Dave Nash",,"another description"
+     *   3,{stored[person][name]},{stored[person][age]},{stored[person][desc]}
      *   """
      *
      * @param PyStringNode $body
@@ -288,6 +288,32 @@ class GuzzleContext extends RawGuzzleContext
             $this->getGuzzleResponse()->getBody(true),
             $this->addStoredValues($body->getRaw())
         );
+    }
+
+    /**
+     * Check response contains a specified string
+     *
+     * Example: And the response contains the following string:
+     *    """
+     *      {stored[someArray][email][invalid]} is invalid
+     *    """
+     *
+     * @param PyStringNode $string String specified in feature
+     *
+     * @Then the response contains the following string:
+     */
+    public function theResponseContainsTheFollowingString(
+        PyStringNode $string
+    ) {
+        $response = $this->getGuzzleResponse()->getBody(true);
+        $formatted = $this->addStoredValues($string->getRaw());
+
+        if (strpos($response, $formatted) === false) {
+            throw new ClientErrorResponseException(
+                'Actual response ' . $response . ' does not contain ' .
+                'string ' . $formatted
+            );
+        }
     }
 
     /**
