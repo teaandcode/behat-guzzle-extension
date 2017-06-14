@@ -13,6 +13,7 @@
 
 namespace Behat\GuzzleExtension\Context;
 
+use Guzzle\Common\Exception\RuntimeException;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Response;
@@ -38,7 +39,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     /**
      * @var string
      */
-    const GUZZLE_EXTENSION_VERSION = '0.4.0';
+    const GUZZLE_EXTENSION_VERSION = '0.4.1';
 
     /**
      * @var Client
@@ -89,6 +90,16 @@ class RawGuzzleContext implements GuzzleAwareContext
             $result = $this->getGuzzleClient()->execute($command);
         } catch (BadResponseException $e) {
             $this->response = $e->getResponse();
+
+            try {
+                $this->result = $e->getResponse()->json();
+            } catch (RuntimeException $e) {
+                try {
+                    $this->result = $e->getResponse()->xml();
+                } catch (RuntimeException $e) {
+                    continue;
+                }
+            }
 
             return;
         }
