@@ -92,13 +92,19 @@ class RawGuzzleContext implements GuzzleAwareContext
             $this->response = $e->getResponse();
 
             try {
-                $this->result = $e->getResponse()->json();
+                $this->result = $this->response->json();
+
+                return;
             } catch (RuntimeException $e) {
-                try {
-                    $this->result = $e->getResponse()->xml();
-                } catch (RuntimeException $e) {
-                    continue;
-                }
+                continue
+            }
+
+            try {
+                $this->result = $this->response->xml();
+
+                return;
+            } catch (RuntimeException $e) {
+                continue;
             }
 
             return;
@@ -336,7 +342,7 @@ class RawGuzzleContext implements GuzzleAwareContext
      * Adds, updates or removes header (if no value is provided)
      *
      * @param string $field Field name
-     * @param mixed  $value Header value
+     * @param string $value Header value
      *
      * @access private
      * @return void
