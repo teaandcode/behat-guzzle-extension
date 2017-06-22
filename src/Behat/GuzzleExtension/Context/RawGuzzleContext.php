@@ -39,7 +39,7 @@ class RawGuzzleContext implements GuzzleAwareContext
     /**
      * @var string
      */
-    const GUZZLE_EXTENSION_VERSION = '0.4.1';
+    const GUZZLE_EXTENSION_VERSION = '0.4.2';
 
     /**
      * @var Client
@@ -96,7 +96,7 @@ class RawGuzzleContext implements GuzzleAwareContext
 
                 return;
             } catch (RuntimeException $e) {
-                continue;
+                // Do nothing
             }
 
             try {
@@ -104,7 +104,7 @@ class RawGuzzleContext implements GuzzleAwareContext
 
                 return;
             } catch (RuntimeException $e) {
-                continue;
+                // Do nothing
             }
 
             return;
